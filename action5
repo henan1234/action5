@@ -10,7 +10,7 @@ dir=$1
 dirname=`basename $dir`
 append=md5
 action="echo \$f"
-mdir=${bdir}${append}
+mdir=${dir}${append}
 
 if [ "$dir" == "$mdir" ] ;
 then
