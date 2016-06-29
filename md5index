@@ -1,0 +1,33 @@
+#!/bin/bash
+
+if [[ "$1" == "" || ! -d "$1" ]] ;
+then
+  echo "no folder exists, please check it."
+  exit
+fi
+
+dir=$1
+dirname=`basename $dir`
+append=md5
+mdir=${dir}${append}
+
+if [ "$dir" == "$mdir" ] ;
+then
+  echo "something is wrong..."
+  exit
+fi
+
+if [ -f "$dirname" ] ;
+then
+  echo "this is not a folder, weird stuff happened."
+  exit
+fi
+
+mkdir -p ${mdir}
+for f in `find $dir -type f`;
+do
+  mpath=`dirname $f | sed 's/'$dirname'/'$dirname'md5/'`
+  mname=`basename $f`
+  mkdir -p $mpath
+  md5sum $f | awk '{print $1}' > $mpath/$mname
+done
