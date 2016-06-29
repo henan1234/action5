@@ -1,0 +1,32 @@
+#!/bin/bash
+
+loc=`dirname "$(readlink -f "$0")"`
+
+if [[ "$1" == "" || ! -d "$1" ]] ;
+then
+  echo "no folder exists, please check it."
+  exit
+fi
+
+dir=$1
+dirname=`basename $dir`
+append=md5
+action="echo \$f"
+mdir=${dir}${append}
+
+if [ "$dir" == "$mdir" ] ;
+then
+  echo "something is wrong..."
+  exit
+fi
+
+if [[ ! -d "$mdir" ]] ;
+then
+  echo "no index found, creating..."
+  $loc/md5index "$dir"
+  echo "done, next time the script is run changes will be dealt with."
+  exit
+fi
+
+echo "actioning the data..."
+$loc/action5 "$dir"
