@@ -9,7 +9,7 @@ then
 fi
 
 dir=$1
-append=md5
+append=idx
 mdir=${dir}${append}
 
 if [ "$dir" == "$mdir" ] ;
@@ -21,7 +21,7 @@ fi
 if [[ ! -d "$mdir" ]] ;
 then
   echo "no index found, creating..."
-  $loc/md5index "$dir"
+  $loc/index5 "$dir"
   echo "done, next time the script is run changes will be dealt with."
   exit
 fi
