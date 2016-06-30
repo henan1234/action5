@@ -8,7 +8,9 @@ fi
 
 dir=$1
 dirname=`basename $dir`
-append=md5
+append=idx
+#action="md5sum"
+action="stat -c %Y"
 mdir=${dir}${append}
 
 if [ "$dir" == "$mdir" ] ;
@@ -26,8 +28,8 @@ fi
 mkdir -p ${mdir}
 for f in `find $dir -type f`;
 do
-  mpath=`dirname $f | sed 's/'$dirname'/'$dirname'md5/'`
+  mpath=`dirname $f | sed 's/'$dirname'/'$dirname$append'/'`
   mname=`basename $f`
   mkdir -p $mpath
-  md5sum $f | awk '{print $1}' > $mpath/$mname
+  eval "$action $f" | awk '{print $1}' > $mpath/$mname
 done
