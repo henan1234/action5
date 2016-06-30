@@ -8,8 +8,9 @@ fi
 
 dir=$1
 dirname=`basename $dir`
-append=md5
+append=idx
 action="echo \$f"
+sigc="stat -c %Y"
 mdir=${dir}${append}
 
 if [ "$dir" == "$mdir" ] ;
@@ -26,10 +27,10 @@ fi
 
 for f in `find $dir -type f`;
 do
-  mpath=`dirname $f | sed 's/'$dirname'/'$dirname'md5/'`
+  mpath=`dirname $f | sed 's/'$dirname'/'$dirname$append'/'`
   mname=`basename $f`
-  fmd5=`cat $mpath/$mname`
-  if [ "$fmd5" != "`md5sum $f | awk '{print $1}' `"  ] ;
+  fsig=`cat $mpath/$mname`
+  if [ "$fsig" != "`eval "$sigc $f" | awk '{print $1}' `"  ] ;
   then
     eval $action
   fi
